@@ -23,8 +23,9 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.generateToken = function(){
     const token = jwt.sign({id : this._id}, config.JWT_SECRET,{
-        expireIn: '1h',
+        expiresIn: '1h',
     });
+    return token
 };
 
 userSchema.statics.verifyToken = function(token){
@@ -43,7 +44,7 @@ userSchema.statics.hashPassword = async function(password){
     return hash; 
 }
 
-userSchema.methods.comparePassword = async function(){
+userSchema.methods.comparePassword = async function(password){
     const isMatch = await bcrypt.compare(password, this.password);
     return isMatch 
 }

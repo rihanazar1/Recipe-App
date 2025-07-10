@@ -6,7 +6,7 @@ export async function createUser({username, email, password}){
         throw new Error("username , email and password is required")
     }
 
-    const isUserExist = await userModel.find({
+    const isUserExist = await userModel.findOne({
         $or: [
             {
                 username
@@ -21,7 +21,9 @@ export async function createUser({username, email, password}){
         throw new Error("user already exist")
     }
 
-    const hash = await userModel.hashPassword({
+    const hash = await userModel.hashPassword(password)
+
+    const user = await userModel.create({
         username,
         email,
         password: hash

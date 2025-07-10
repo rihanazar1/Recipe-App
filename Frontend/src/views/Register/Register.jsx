@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import "../Register/Register.css"
+import axios from "axios"
 
 const Register = () => {
 
@@ -7,37 +9,45 @@ const Register = () => {
     const [password, setPassword] = useState("")
 
 
-    const handleSubmit = (event) =>{
+    const handleSubmit = async (event) =>{
         event.preventDefault();
+
+       const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/user/register`,{
+            username, email, password
+        },{
+            withCredentials: true
+        })
     }
 
   return (
-   <form onSubmit={handleSubmit}>
-        <input 
-        type="text" 
-        placeholder='Username' 
-        value={username}
-        onChange={(e) => {
-            setUsername(e.target.value)
-            console.log(e.target.value)}}
-        required />
+   <div className='auth-section'>
+        <form onSubmit={handleSubmit}>
+            <input 
+            type="text" 
+            placeholder='Username' 
+            value={username}
+            onChange={(e) => {
+                setUsername(e.target.value)
+                console.log(e.target.value)}}
+            required />
 
-        <input 
-        type="text" 
-        placeholder='Email' 
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required />
+            <input 
+            type="text" 
+            placeholder='Email' 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required />
 
-        <input 
-        type="password" 
-        placeholder='Password' 
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required/>
+            <input 
+            type="password" 
+            placeholder='Password' 
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required/>
 
-        <button type='submit'>Register</button>
-   </form>
+                <button type='submit'>Register</button>
+        </form>
+   </div>
   )
 }
 
