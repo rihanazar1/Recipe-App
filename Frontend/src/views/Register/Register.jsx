@@ -1,12 +1,18 @@
 import React, { useState } from 'react'
 import "../Register/Register.css"
 import axios from "axios"
+import {useNavigate} from 'react-router-dom'
+import { setUser } from '../../redux/features/user/user.feature'
+import { useSelector, useDispatch } from 'react-redux'
+
 
 const Register = () => {
 
     const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
 
     const handleSubmit = async (event) =>{
@@ -17,6 +23,13 @@ const Register = () => {
         },{
             withCredentials: true
         })
+
+        dispatch(setUser({
+            username: response.data.user.username,
+            email: response.data.user.email
+        }))
+
+        navigate('/home')
     }
 
   return (
